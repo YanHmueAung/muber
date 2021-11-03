@@ -1,27 +1,29 @@
 
 const express = require('express'),
-    app = express();
-// bodyParser = require('body-parser'),
-// mongoose = require('mongoose'),
+    app = express(),
+    routes = require('./routes/routes'),
+    bodyParser = require('body-parser'),
+    mongoose = require('mongoose');
 // fileUpload = require('express-fileupload');
-
-// main().catch(err => console.log(err));
-// async function main() {
-//       await mongoose.connect(`mongodb://localhost:27017/${process.env.db_name}`,{
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true,
-//         useCreateIndex: true,
-//         useFindAndModify: true
-//     });
-// }
-// app.use(bodyParser.json());
+mongoose.Promise = global.Promise;
+main().catch(err => console.log(err));
+async function main() {
+    if (process.env.NODE_ENV !== 'test') {
+        await mongoose.connect(`mongodb://localhost:27017/muber`, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+    }
+}
+app.use(bodyParser.json());
 // app.use(fileUpload());
 
-app.get('/api', (req, res) =>
-    res.send({ "hi": "hter" })
-)
-// const userRouter=require('./routes/user');
+routes(app)
+app.use((err, req, res, next) => {
+    res.status(422).send({ error: err._message })
 
+})
+// const userRouter=require('./routes/user');
 // app.use('/users',userRouter);
 
 module.exports = app;
