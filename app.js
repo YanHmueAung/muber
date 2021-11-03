@@ -1,4 +1,4 @@
-//require('dotenv').config()
+
 const express = require('express'),
     app = express();
 // bodyParser = require('body-parser'),
@@ -14,11 +14,12 @@ const express = require('express'),
 //         useFindAndModify: true
 //     });
 // }
-
 // app.use(bodyParser.json());
 // app.use(fileUpload());
 
-
+app.get('/api', (req, res) =>
+    res.send({ "hi": "hter" })
+)
 // const userRouter=require('./routes/user');
 
 // app.use('/users',userRouter);
